@@ -62,43 +62,45 @@ Give:
 """
 
  try:
-            response = requests.post(
-                "https://openrouter.ai/api/v1/chat/completions",
-                headers={
-                    "Authorization": f"Bearer {API_KEY}",
-                    "Content-Type": "application/json"
-                },
-                json={
-                   "model": "google/gemma-3-4b-it",
-                    "messages": [
-                        {
-                            "role": "user",
-                            "content": prompt
-                        }
-                    ]
+
+    response = requests.post(
+        "https://openrouter.ai/api/v1/chat/completions",
+        headers={
+            "Authorization": f"Bearer {API_KEY}",
+            "Content-Type": "application/json"
+        },
+        json={
+            "model": "google/gemma-3-4b-it",
+            "messages": [
+                {
+                    "role": "user",
+                    "content": prompt
                 }
-            )
+            ]
+        }
+    )
 
-            result = response.json()
+    result = response.json()
 
-if "choices" in result:
+    if "choices" in result:
 
-    ai_response = result["choices"][0]["message"]["content"]
+        ai_response = result["choices"][0]["message"]["content"]
 
-    st.write("## AI Career Guidance")
-    st.success(ai_response)
+        st.write("## AI Career Guidance")
+        st.success(ai_response)
 
-elif "error" in result:
+    elif "error" in result:
 
-    st.error(f"OpenRouter Error: {result['error']}")
+        st.error(f"OpenRouter Error: {result['error']}")
 
-else:
+    else:
 
-    st.error("Unexpected Response")
-    st.json(result)
-        except Exception as e:
-            st.error(f"AI Error: {e}")
+        st.error("Unexpected Response")
+        st.json(result)
 
+except Exception as e:
+
+    st.error(f"AI Error: {e}")
     # Skill Gap Analysis
     st.write("## Skill Gap Analysis")
 
