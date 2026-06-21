@@ -1,3 +1,4 @@
+```python
 import streamlit as st
 import requests
 
@@ -43,61 +44,60 @@ if st.button("Get Career Recommendation"):
     if user_question:
 
         prompt = f"""
-        Student Name: {name}
-        Branch: {branch}
-        Interest: {interest}
-        Skills: {skills}
+Student Name: {name}
+Branch: {branch}
+Interest: {interest}
+Skills: {skills}
 
-        Question:
-        {user_question}
+Question:
+{user_question}
 
-        Give:
-        1. Personalized Career Guidance
-        2. Career Roadmap
-        3. Required Skills
-        4. Certifications
-        5. Job Opportunities
-        6. Salary Expectations
-        """
+Give:
+1. Personalized Career Guidance
+2. Career Roadmap
+3. Required Skills
+4. Certifications
+5. Job Opportunities
+6. Salary Expectations
+"""
 
- try:
-
-    response = requests.post(
-        "https://openrouter.ai/api/v1/chat/completions",
-        headers={
-            "Authorization": f"Bearer {API_KEY}",
-            "Content-Type": "application/json"
-        },
-        json={
-            "model": "mistralai/mistral-7b-instruct:free",
-            "messages": [
-                {
-                    "role": "user",
-                    "content": prompt
+        try:
+            response = requests.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {API_KEY}",
+                    "Content-Type": "application/json"
+                },
+                json={
+                    "model": "mistralai/mistral-7b-instruct:free",
+                    "messages": [
+                        {
+                            "role": "user",
+                            "content": prompt
+                        }
+                    ]
                 }
-            ]
-        }
-    )
+            )
 
-    result = response.json()
+            result = response.json()
 
-    st.write("## Debug Response")
-    st.json(result)
+            st.write("## Debug Response")
+            st.json(result)
 
-    if "choices" in result:
-        ai_response = result["choices"][0]["message"]["content"]
+            if "choices" in result:
+                ai_response = result["choices"][0]["message"]["content"]
 
-        st.write("## AI Career Guidance")
-        st.write(ai_response)
+                st.write("## AI Career Guidance")
+                st.write(ai_response)
 
-    elif "error" in result:
-        st.error(f"OpenRouter Error: {result['error']}")
+            elif "error" in result:
+                st.error(f"OpenRouter Error: {result['error']}")
 
-    else:
-        st.error(f"Unexpected Response: {result}")
+            else:
+                st.error(f"Unexpected Response: {result}")
 
-except Exception as e:
-    st.error(f"AI Error: {e}")
+        except Exception as e:
+            st.error(f"AI Error: {e}")
 
     # Skill Gap Analysis
     st.write("## Skill Gap Analysis")
@@ -149,7 +149,6 @@ except Exception as e:
     st.write(missing_skills)
 
     # Career Recommendations
-
     st.write("## Career Recommendations")
 
     if interest == "AI":
@@ -196,3 +195,4 @@ except Exception as e:
         st.write("- Arduino Programming")
         st.write("- Embedded C")
         st.write("- ARM Microcontrollers")
+
