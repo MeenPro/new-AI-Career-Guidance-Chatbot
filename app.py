@@ -69,7 +69,7 @@ Give:
                     "Content-Type": "application/json"
                 },
                 json={
-                    "model": "mistralai/mistral-7b-instruct:free",
+                    "model": "meta-llama/llama-3.3-8b-instruct:free",
                     "messages": [
                         {
                             "role": "user",
