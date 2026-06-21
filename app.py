@@ -81,21 +81,21 @@ Give:
 
             result = response.json()
 
-            st.write("## Debug Response")
-            st.json(result)
+if "choices" in result:
 
-            if "choices" in result:
-                ai_response = result["choices"][0]["message"]["content"]
+    ai_response = result["choices"][0]["message"]["content"]
 
-                st.write("## AI Career Guidance")
-                st.write(ai_response)
+    st.write("## AI Career Guidance")
+    st.success(ai_response)
 
-            elif "error" in result:
-                st.error(f"OpenRouter Error: {result['error']}")
+elif "error" in result:
 
-            else:
-                st.error(f"Unexpected Response: {result}")
+    st.error(f"OpenRouter Error: {result['error']}")
 
+else:
+
+    st.error("Unexpected Response")
+    st.json(result)
         except Exception as e:
             st.error(f"AI Error: {e}")
 
