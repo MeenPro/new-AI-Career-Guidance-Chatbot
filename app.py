@@ -4,7 +4,7 @@ import google.generativeai as genai
 # Gemini API Configuration
 genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel("gemini-2.0-flash")
 # Title
 st.title("AI Career Guidance Chatbot")
 
