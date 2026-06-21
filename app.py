@@ -62,32 +62,42 @@ if st.button("Get Career Recommendation"):
 
         try:
 
-            response = requests.post(
-                "https://openrouter.ai/api/v1/chat/completions",
-                headers={
-                    "Authorization": f"Bearer {API_KEY}",
-                    "Content-Type": "application/json"
-                },
-                json={
-                    "model": "mistralai/mistral-7b-instruct:free",
-                    "messages": [
-                        {
-                            "role": "user",
-                            "content": prompt
-                        }
-                    ]
+    response = requests.post(
+        "https://openrouter.ai/api/v1/chat/completions",
+        headers={
+            "Authorization": f"Bearer {API_KEY}",
+            "Content-Type": "application/json"
+        },
+        json={
+            "model": "mistralai/mistral-7b-instruct:free",
+            "messages": [
+                {
+                    "role": "user",
+                    "content": prompt
                 }
-            )
+            ]
+        }
+    )
 
-            result = response.json()
+    result = response.json()
 
-            ai_response = result["choices"][0]["message"]["content"]
+    st.write("## Debug Response")
+    st.json(result)
 
-            st.write("## AI Career Guidance")
-            st.write(ai_response)
+    if "choices" in result:
+        ai_response = result["choices"][0]["message"]["content"]
 
-        except Exception as e:
-            st.error(f"AI Error: {e}")
+        st.write("## AI Career Guidance")
+        st.write(ai_response)
+
+    elif "error" in result:
+        st.error(f"OpenRouter Error: {result['error']}")
+
+    else:
+        st.error(f"Unexpected Response: {result}")
+
+except Exception as e:
+    st.error(f"AI Error: {e}")
 
     # Skill Gap Analysis
     st.write("## Skill Gap Analysis")
