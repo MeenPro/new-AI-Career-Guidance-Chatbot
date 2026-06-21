@@ -1,11 +1,11 @@
 import streamlit as st
-import google.generativeai as genai
+import requests
 
-# Gemini API Configuration
-genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+# OpenRouter API Key
+API_KEY = st.secrets["OPENROUTER_API_KEY"]
 
-model = genai.GenerativeModel("gemini-2.0-flash")
-# Title
+# Page Title
+st.set_page_config(page_title="AI Career Guidance Chatbot")
 st.title("AI Career Guidance Chatbot")
 
 # Student Details
@@ -34,10 +34,10 @@ if st.button("Get Career Recommendation"):
 
     # Student Profile
     st.write("## Student Profile")
-    st.write("Name:", name)
-    st.write("Branch:", branch)
-    st.write("Interest:", interest)
-    st.write("Skills:", skills)
+    st.write("**Name:**", name)
+    st.write("**Branch:**", branch)
+    st.write("**Interest:**", interest)
+    st.write("**Skills:**", skills)
 
     # AI Career Guidance
     if user_question:
@@ -51,19 +51,43 @@ if st.button("Get Career Recommendation"):
         Question:
         {user_question}
 
-        Give personalized career guidance,
-        roadmap, certifications, required skills,
-        and future opportunities.
+        Give:
+        1. Personalized Career Guidance
+        2. Career Roadmap
+        3. Required Skills
+        4. Certifications
+        5. Job Opportunities
+        6. Salary Expectations
         """
 
         try:
-            response = model.generate_content(prompt)
+
+            response = requests.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {API_KEY}",
+                    "Content-Type": "application/json"
+                },
+                json={
+                    "model": "mistralai/mistral-7b-instruct:free",
+                    "messages": [
+                        {
+                            "role": "user",
+                            "content": prompt
+                        }
+                    ]
+                }
+            )
+
+            result = response.json()
+
+            ai_response = result["choices"][0]["message"]["content"]
 
             st.write("## AI Career Guidance")
-            st.write(response.text)
+            st.write(ai_response)
 
         except Exception as e:
-            st.error(f"Gemini Error: {e}")
+            st.error(f"AI Error: {e}")
 
     # Skill Gap Analysis
     st.write("## Skill Gap Analysis")
@@ -108,28 +132,21 @@ if st.button("Get Career Recommendation"):
         if skill not in student_skills
     ]
 
-    st.write("Your Skills:", student_skills)
-    st.write("Missing Skills:", missing_skills)
+    st.write("### Your Skills")
+    st.write(student_skills)
 
-    # Career Recommendation
+    st.write("### Missing Skills")
+    st.write(missing_skills)
+
+    # Career Recommendations
+
+    st.write("## Career Recommendations")
 
     if interest == "AI":
 
-        st.success("Career: Machine Learning Engineer")
+        st.success("Recommended Career: Machine Learning Engineer")
 
-        st.write("### Skills Required")
-        st.write("- Python")
-        st.write("- Machine Learning")
-        st.write("- Deep Learning")
-
-        st.write("### Learning Roadmap")
-        st.write("1. Learn Python")
-        st.write("2. Learn Machine Learning")
-        st.write("3. Learn Deep Learning")
-        st.write("4. Build AI Projects")
-        st.write("5. Apply for Internships")
-
-        st.write("### Recommended Courses")
+        st.write("### Courses")
         st.write("- Python for Data Science")
         st.write("- Machine Learning")
         st.write("- Deep Learning")
@@ -137,74 +154,34 @@ if st.button("Get Career Recommendation"):
 
     elif interest == "VLSI":
 
-        st.success("Career: VLSI Design Engineer")
+        st.success("Recommended Career: VLSI Design Engineer")
 
-        st.write("### Skills Required")
-        st.write("- Verilog")
-        st.write("- VHDL")
-        st.write("- SystemVerilog")
-
-        st.write("### Learning Roadmap")
-        st.write("1. Learn Digital Electronics")
-        st.write("2. Learn Verilog HDL")
-        st.write("3. Practice FPGA Projects")
-        st.write("4. Learn ASIC Design Flow")
-        st.write("5. Apply for VLSI Internships")
-
-        st.write("### Recommended Courses")
+        st.write("### Courses")
         st.write("- Digital Electronics")
         st.write("- Verilog HDL")
         st.write("- FPGA Design")
-        st.write("- ASIC Design Flow")
+        st.write("- ASIC Design")
 
     elif interest == "Cyber Security":
 
-        st.success("Career: Cyber Security Analyst")
+        st.success("Recommended Career: Cyber Security Analyst")
 
-        st.write("### Skills Required")
-        st.write("- Networking")
-        st.write("- Linux")
-        st.write("- Ethical Hacking")
-        st.write("- Python")
-        st.write("- Web Security")
-
-        st.write("### Learning Roadmap")
-        st.write("1. Learn Computer Networking")
-        st.write("2. Learn Linux Fundamentals")
-        st.write("3. Learn Python Programming")
-        st.write("4. Learn Ethical Hacking")
-        st.write("5. Practice on TryHackMe")
-        st.write("6. Learn Web Security")
-
-        st.write("### Recommended Courses")
+        st.write("### Courses")
         st.write("- Networking Fundamentals")
         st.write("- Linux Essentials")
         st.write("- Ethical Hacking")
-        st.write("- Web Application Security")
+        st.write("- Web Security")
 
-        st.write("### Recommended Certifications")
-        st.write("- Google Cybersecurity Certificate")
+        st.write("### Certifications")
+        st.write("- Google Cybersecurity")
         st.write("- CompTIA Security+")
         st.write("- CEH")
-        st.write("- Cisco CyberOps Associate")
 
     else:
 
-        st.success("Career: Embedded Systems Engineer")
+        st.success("Recommended Career: Embedded Systems Engineer")
 
-        st.write("### Skills Required")
-        st.write("- C Programming")
-        st.write("- Microcontrollers")
-        st.write("- Arduino")
-
-        st.write("### Learning Roadmap")
-        st.write("1. Learn C Programming")
-        st.write("2. Learn Arduino")
-        st.write("3. Learn Microcontrollers")
-        st.write("4. Build Embedded Projects")
-        st.write("5. Apply for Internships")
-
-        st.write("### Recommended Courses")
+        st.write("### Courses")
         st.write("- C Programming")
         st.write("- Arduino Programming")
         st.write("- Embedded C")
