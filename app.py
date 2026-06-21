@@ -60,8 +60,7 @@ Give:
 5. Job Opportunities
 6. Salary Expectations
 """
-
- try:
+try:
 
     response = requests.post(
         "https://openrouter.ai/api/v1/chat/completions",
