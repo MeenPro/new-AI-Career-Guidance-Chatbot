@@ -69,7 +69,7 @@ Give:
                     "Content-Type": "application/json"
                 },
                 json={
-                    "model": "meta-llama/llama-3.3-8b-instruct:free",
+                    "model": "deepseek/deepseek-r1-0528:free",
                     "messages": [
                         {
                             "role": "user",
