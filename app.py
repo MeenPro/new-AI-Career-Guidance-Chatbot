@@ -60,7 +60,7 @@ if st.button("Get Career Recommendation"):
         6. Salary Expectations
         """
 
-        try:
+ try:
 
     response = requests.post(
         "https://openrouter.ai/api/v1/chat/completions",
