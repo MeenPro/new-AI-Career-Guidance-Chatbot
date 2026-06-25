@@ -6,6 +6,8 @@ st.set_page_config(page_title="AI Career Guidance Chatbot", page_icon="🤖")
 
 # Get OpenRouter API Key from Render Environment Variable
 API_KEY = os.getenv("OPENROUTER_API_KEY")
+st.write("API Key Loaded:", API_KEY is not None)
+st.write("API Key Length:", len(API_KEY) if API_KEY else 0)
 
 # Check if API Key exists
 if not API_KEY:
