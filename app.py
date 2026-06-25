@@ -3,7 +3,9 @@ import requests
 
 st.set_page_config(page_title="AI Career Guidance Chatbot", page_icon="🤖")
 
-API_KEY = st.secrets["OPENROUTER_API_KEY"]
+import os
+
+API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 st.title("🤖 AI Career Guidance Chatbot")
 
