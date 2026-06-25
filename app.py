@@ -1,11 +1,16 @@
 import streamlit as st
 import requests
+import os
 
 st.set_page_config(page_title="AI Career Guidance Chatbot", page_icon="🤖")
 
-import os
-
+# Get OpenRouter API Key from Render Environment Variable
 API_KEY = os.getenv("OPENROUTER_API_KEY")
+
+# Check if API Key exists
+if not API_KEY:
+    st.error("OPENROUTER_API_KEY not found. Please add it in Render Environment Variables.")
+    st.stop()
 
 st.title("🤖 AI Career Guidance Chatbot")
 
